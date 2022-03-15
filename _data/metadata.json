@@ -1,0 +1,20 @@
+{
+    "title": "Jason Steinshouer",
+    "url": "https://jasonsteinshouer.com/",
+    "language": "en",
+    "description": "Blog on web development and technology",
+    "google_analytics": "UA-80138644-1",
+    "feed": {
+      "subtitle": "Blog on web development and technology",
+      "filename": "feed.xml",
+      "path": "/feed.xml",
+      "id": "https://jasonsteinshouer.com"
+    },
+    "author": {
+      "name": "Jason Steinshouer",
+      "github": "jsteinshouer",
+      "twitter": "jdsteinshouer",
+      "avatar": "https://avatars0.githubusercontent.com/u/2914865"
+    }
+  }
+  

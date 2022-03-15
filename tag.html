@@ -1,0 +1,37 @@
+---
+layout: default
+pagination:
+    data: collections.tags
+    size: 1
+    alias: tag
+permalink: "tag/{{ tag | slug }}/"
+---
+
+{% include header.html %}
+
+<main id="content" class="content" role="main">
+
+    {% for post in collections[tag] reversed %}
+    <article class="post">
+        <header class="post-header">
+            <h2 class="post-title"><a href="{{ post.url }}">{{ post.data.title }}</a></h2>
+        </header>
+        <section class="post-excerpt">
+            {% if post.data.excerpt.size > 0 %} 
+                {{ post.data.excerpt }} 
+            {% else %}
+                {{ post.templateContent | excerpt }} 
+            {% endif %}
+            <a class="read-more" href="{{ post.url }}">&raquo;</a>
+        </section>
+        <footer class="post-meta">
+            {% if post.data.tags.size > 0 %} 
+                {{ post.data.tags | tag_list }} 
+            {% endif %}
+            <time class="post-date" datetime="{{ post.date | date:"%Y-%m-%d" }}">
+                {{ post.date | date_to_string }}
+            </time> 
+        </footer>
+    </article>
+    {% endfor %}
+</main>

@@ -1,0 +1,47 @@
+---
+layout: default
+title: Projects
+---
+
+{% include header.html %}
+
+<main id="content" class="content" role="main">
+
+    {% for project in collections.projects %}
+    <article class="post">
+      <header class="post-header">
+            <h2 class="post-title">
+                {% if project.templateContent.size > 0 %}
+                    <a href="{{ project.url }}">{{ project.data.name }}<a/>
+                {% else %}
+                    {{ project.data.name }}
+                {% endif %}
+            </h2>
+        </header>
+        <section class="post-meta">
+            {% if project.data.icons.size > 0 %}
+                {% for icon in project.data.icons %}
+                    <i class="{{icon}} fa-2x"></i>
+                {% endfor %} 
+            {% endif %}
+        </section>
+        <section class="post-meta" style="font-size: 1.2em; margin-bottom: 20px">
+            {% if project.data.technology.size > 0 %}
+                    {{ project.data.technology| array_to_sentence_string }} 
+            {% endif %}
+        </section>
+        <section class="post-excerpt">
+            {{ project.data.description }}
+        </section>
+        <footer class="post-meta">
+            <a href="{{ project.data.code_url }}" target="_blank">View Code</a>
+            {% if project.data.project_url %}
+                | <a href="{{ project.data.project_url }}" target="_blank">View Project</a> 
+            {% endif %}
+
+            {% if project.templateContent.size > 0 %}  | <a href="{{ project.url }}">More</a> {% endif %}
+         </footer>
+    </article>
+    {% endfor %}
+
+</main>

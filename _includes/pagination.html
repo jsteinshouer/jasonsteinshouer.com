@@ -1,0 +1,9 @@
+<nav class="pagination" role="pagination">
+    {% if pagination.href.previous %}
+        <a class="newer-posts" href="{{ pagination.href.previous }}" title="Previous Page">&laquo; Newer Posts</a>
+    {% endif %}
+    <span class="page-number"> Page {{ pagination.pageNumber | plus: 1 }} of {{ pagination.pages.size }} </span>
+    {% if pagination.href.next %} 
+        <a class="older-posts" href="{{ pagination.href.next }}" title="Next Page">Older Posts &raquo;</a>
+    {% endif %} 
+</nav>
