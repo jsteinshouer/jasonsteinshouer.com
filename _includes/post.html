@@ -15,7 +15,7 @@ post_class: post-template
             <h1 class="post-title">{{ title }}</h1>
             <section class="post-meta">
                 {% if tags.size > 0 %}
-                    {{ tags | array_to_sentence_string }} 
+                    {{ tags | tag_list }} 
                 {% endif %}
                 <time class="post-date" datetime="{{ page.date | date:"%Y-%m-%d" }}">{{ page.date | date_to_string }}</time>
             </section>
