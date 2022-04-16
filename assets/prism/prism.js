@@ -615,3 +615,161 @@ Prism.languages.cfscript = Prism.languages.extend('clike', {
 });
 
 Prism.languages.sql={comment:{pattern:/(^|[^\\])(?:\/\*[\w\W]*?\*\/|(?:--|\/\/|#).*)/,lookbehind:!0},string:{pattern:/(^|[^@\\])("|')(?:\\?[\s\S])*?\2/,lookbehind:!0},variable:/@[\w.$]+|@("|'|`)(?:\\?[\s\S])+?\1/,"function":/\b(?:COUNT|SUM|AVG|MIN|MAX|FIRST|LAST|UCASE|LCASE|MID|LEN|ROUND|NOW|FORMAT)(?=\s*\()/i,keyword:/\b(?:ACTION|ADD|AFTER|ALGORITHM|ALL|ALTER|ANALYZE|ANY|APPLY|AS|ASC|AUTHORIZATION|AUTO_INCREMENT|BACKUP|BDB|BEGIN|BERKELEYDB|BIGINT|BINARY|BIT|BLOB|BOOL|BOOLEAN|BREAK|BROWSE|BTREE|BULK|BY|CALL|CASCADED?|CASE|CHAIN|CHAR VARYING|CHARACTER (?:SET|VARYING)|CHARSET|CHECK|CHECKPOINT|CLOSE|CLUSTERED|COALESCE|COLLATE|COLUMN|COLUMNS|COMMENT|COMMIT|COMMITTED|COMPUTE|CONNECT|CONSISTENT|CONSTRAINT|CONTAINS|CONTAINSTABLE|CONTINUE|CONVERT|CREATE|CROSS|CURRENT(?:_DATE|_TIME|_TIMESTAMP|_USER)?|CURSOR|DATA(?:BASES?)?|DATE(?:TIME)?|DBCC|DEALLOCATE|DEC|DECIMAL|DECLARE|DEFAULT|DEFINER|DELAYED|DELETE|DELIMITER(?:S)?|DENY|DESC|DESCRIBE|DETERMINISTIC|DISABLE|DISCARD|DISK|DISTINCT|DISTINCTROW|DISTRIBUTED|DO|DOUBLE(?: PRECISION)?|DROP|DUMMY|DUMP(?:FILE)?|DUPLICATE KEY|ELSE|ENABLE|ENCLOSED BY|END|ENGINE|ENUM|ERRLVL|ERRORS|ESCAPE(?:D BY)?|EXCEPT|EXEC(?:UTE)?|EXEC|SP_RECOMPILE|EXISTS|EXIT|EXPLAIN|EXTENDED|FETCH|FIELDS|FILE|FILLFACTOR|FIRST|FIXED|FLOAT|FOLLOWING|FOR(?: EACH ROW)?|FORCE|FOREIGN|FREETEXT(?:TABLE)?|FROM|FULL|FUNCTION|GEOMETRY(?:COLLECTION)?|GLOBAL|GOTO|GRANT|GROUP|HANDLER|HASH|HAVING|HOLDLOCK|IDENTITY(?:_INSERT|COL)?|IF|IGNORE|IMPORT|INDEX|INFILE|INNER|INNODB|INOUT|INSERT|INT|INTEGER|INTERSECT|INTO|INVOKER|ISOLATION LEVEL|JOIN|KEYS?|KILL|LANGUAGE SQL|LAST|LEFT|LIMIT|LINENO|LINES|LINESTRING|LOAD|LOCAL|LOCK|LONG(?:BLOB|TEXT)|MATCH(?:ED)?|MEDIUM(?:BLOB|INT|TEXT)|MERGE|MIDDLEINT|MODIFIES SQL DATA|MODIFY|MULTI(?:LINESTRING|POINT|POLYGON)|NATIONAL(?: CHAR VARYING| CHARACTER(?: VARYING)?| VARCHAR)?|NATURAL|NCHAR(?: VARCHAR)?|NEXT|NO(?: SQL|CHECK|CYCLE)?|NONCLUSTERED|NULLIF|NUMERIC|OFF?|OFFSETS?|ON|OPEN(?:DATASOURCE|QUERY|ROWSET)?|OPTIMIZE|OPTION(?:ALLY)?|ORDER|OUT(?:ER|FILE)?|OVER|PARTIAL|PARTITION|PERCENT|PIVOT|PLAN|POINT|POLYGON|PRECEDING|PRECISION|PREV|PRIMARY|PRINT|PRIVILEGES|PROC(?:EDURE)?|PUBLIC|PURGE|QUICK|RAISERROR|READ(?:S SQL DATA|TEXT)?|REAL|RECONFIGURE|REFERENCES|RELEASE|RENAME|REPEATABLE|REPLICATION|REQUIRE|RESTORE|RESTRICT|RETURNS?|REVOKE|RIGHT|ROLLBACK|ROUTINE|ROW(?:COUNT|GUIDCOL|S)?|RTREE|RULE|SAVE(?:POINT)?|SCHEMA|SELECT|SERIAL(?:IZABLE)?|SESSION(?:_USER)?|SET(?:USER)?|SHARE MODE|SHOW|SHUTDOWN|SIMPLE|SMALLINT|SNAPSHOT|SOME|SONAME|START(?:ING BY)?|STATISTICS|STATUS|STRIPED|SYSTEM_USER|TABLES?|TABLESPACE|TEMP(?:ORARY|TABLE)?|TERMINATED BY|TEXT(?:SIZE)?|THEN|TIMESTAMP|TINY(?:BLOB|INT|TEXT)|TOP?|TRAN(?:SACTIONS?)?|TRIGGER|TRUNCATE|TSEQUAL|TYPES?|UNBOUNDED|UNCOMMITTED|UNDEFINED|UNION|UNIQUE|UNPIVOT|UPDATE(?:TEXT)?|USAGE|USE|USER|USING|VALUES?|VAR(?:BINARY|CHAR|CHARACTER|YING)|VIEW|WAITFOR|WARNINGS|WHEN|WHERE|WHILE|WITH(?: ROLLUP|IN)?|WORK|WRITE(?:TEXT)?)\b/i,"boolean":/\b(?:TRUE|FALSE|NULL)\b/i,number:/\b-?(?:0x)?\d*\.?[\da-f]+\b/,operator:/[-+*\/=%^~]|&&?|\|?\||!=?|<(?:=>?|<|>)?|>[>=]?|\b(?:AND|BETWEEN|IN|LIKE|NOT|OR|IS|DIV|REGEXP|RLIKE|SOUNDS LIKE|XOR)\b/i,punctuation:/[;[\]()`,.]/};
+
+Prism.languages.js = Prism.languages.javascript;
+
+(function (Prism) {
+
+	Prism.languages.diff = {
+		'coord': [
+			// Match all kinds of coord lines (prefixed by "+++", "---" or "***").
+			/^(?:\*{3}|-{3}|\+{3}).*$/m,
+			// Match "@@ ... @@" coord lines in unified diff.
+			/^@@.*@@$/m,
+			// Match coord lines in normal diff (starts with a number).
+			/^\d.*$/m
+		]
+
+		// deleted, inserted, unchanged, diff
+	};
+
+	/**
+	 * A map from the name of a block to its line prefix.
+	 *
+	 * @type {Object<string, string>}
+	 */
+	var PREFIXES = {
+		'deleted-sign': '-',
+		'deleted-arrow': '<',
+		'inserted-sign': '+',
+		'inserted-arrow': '>',
+		'unchanged': ' ',
+		'diff': '!',
+	};
+
+	// add a token for each prefix
+	Object.keys(PREFIXES).forEach(function (name) {
+		var prefix = PREFIXES[name];
+
+		var alias = [];
+		if (!/^\w+$/.test(name)) { // "deleted-sign" -> "deleted"
+			alias.push(/\w+/.exec(name)[0]);
+		}
+		if (name === 'diff') {
+			alias.push('bold');
+		}
+
+		Prism.languages.diff[name] = {
+			pattern: RegExp('^(?:[' + prefix + '].*(?:\r\n?|\n|(?![\\s\\S])))+', 'm'),
+			alias: alias,
+			inside: {
+				'line': {
+					pattern: /(.)(?=[\s\S]).*(?:\r\n?|\n)?/,
+					lookbehind: true
+				},
+				'prefix': {
+					pattern: /[\s\S]/,
+					alias: /\w+/.exec(name)[0]
+				}
+			}
+		};
+
+	});
+
+	// make prefixes available to Diff plugin
+	Object.defineProperty(Prism.languages.diff, 'PREFIXES', {
+		value: PREFIXES
+	});
+
+}(Prism));
+
+(function () {
+
+	if (typeof Prism === 'undefined') {
+		return;
+	}
+
+
+	var LANGUAGE_REGEX = /^diff-([\w-]+)/i;
+	var HTML_TAG = /<\/?(?!\d)[^\s>\/=$<%]+(?:\s(?:\s*[^\s>\/=]+(?:\s*=\s*(?:"[^"]*"|'[^']*'|[^\s'">=]+(?=[\s>]))|(?=[\s/>])))+)?\s*\/?>/g;
+	//this will match a line plus the line break while ignoring the line breaks HTML tags may contain.
+	var HTML_LINE = RegExp(/(?:__|[^\r\n<])*(?:\r\n?|\n|(?:__|[^\r\n<])(?![^\r\n]))/.source.replace(/__/g, function () { return HTML_TAG.source; }), 'gi');
+
+	var warningLogged = false;
+
+	Prism.hooks.add('before-sanity-check', function (env) {
+		var lang = env.language;
+		if (LANGUAGE_REGEX.test(lang) && !env.grammar) {
+			env.grammar = Prism.languages[lang] = Prism.languages.diff;
+		}
+	});
+	Prism.hooks.add('before-tokenize', function (env) {
+		if (!warningLogged && !Prism.languages.diff && !Prism.plugins.autoloader) {
+			warningLogged = true;
+			console.warn("Prism's Diff Highlight plugin requires the Diff language definition (prism-diff.js)." +
+				"Make sure the language definition is loaded or use Prism's Autoloader plugin.");
+		}
+
+		var lang = env.language;
+		if (LANGUAGE_REGEX.test(lang) && !Prism.languages[lang]) {
+			Prism.languages[lang] = Prism.languages.diff;
+		}
+	});
+
+	Prism.hooks.add('wrap', function (env) {
+		var diffLanguage; var diffGrammar;
+
+		if (env.language !== 'diff') {
+			var langMatch = LANGUAGE_REGEX.exec(env.language);
+			if (!langMatch) {
+				return; // not a language specific diff
+			}
+
+			diffLanguage = langMatch[1];
+			diffGrammar = Prism.languages[diffLanguage];
+		}
+
+		var PREFIXES = Prism.languages.diff && Prism.languages.diff.PREFIXES;
+
+		// one of the diff tokens without any nested tokens
+		if (PREFIXES && env.type in PREFIXES) {
+			/** @type {string} */
+			var content = env.content.replace(HTML_TAG, ''); // remove all HTML tags
+
+			/** @type {string} */
+			var decoded = content.replace(/&lt;/g, '<').replace(/&amp;/g, '&');
+
+			// remove any one-character prefix
+			var code = decoded.replace(/(^|[\r\n])./g, '$1');
+
+			// highlight, if possible
+			var highlighted;
+			if (diffGrammar) {
+				highlighted = Prism.highlight(code, diffGrammar, diffLanguage);
+			} else {
+				highlighted = Prism.util.encode(code);
+			}
+
+			// get the HTML source of the prefix token
+			var prefixToken = new Prism.Token('prefix', PREFIXES[env.type], [/\w+/.exec(env.type)[0]]);
+			var prefix = Prism.Token.stringify(prefixToken, env.language);
+
+			// add prefix
+			var lines = []; var m;
+			HTML_LINE.lastIndex = 0;
+			while ((m = HTML_LINE.exec(highlighted))) {
+				lines.push(prefix + m[0]);
+			}
+			if (/(?:^|[\r\n]).$/.test(decoded)) {
+				// because both "+a\n+" and "+a\n" will map to "a\n" after the line prefixes are removed
+				lines.push(prefix);
+			}
+			env.content = lines.join('');
+
+			if (diffGrammar) {
+				env.classes.push('language-' + diffLanguage);
+			}
+		}
+	});
+
+}());
