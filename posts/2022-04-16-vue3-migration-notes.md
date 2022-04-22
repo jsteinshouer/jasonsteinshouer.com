@@ -146,3 +146,12 @@ My app was using `Vue.observable` to create a reactive object for sharing state 
 ```
 
 Hope these notes may help someone else or future me. Again, you can see the [pull request](https://github.com/jsteinshouer/movie-list-app/pull/6) for all the changes including the migration to Vite for a development server.
+
+### Resources
+
+- [Vue 3 Migration Guide](https://v3-migration.vuejs.org/)
+- [Vue.js Guide](https://vuejs.org/guide/introduction.html)
+
+### Related Posts
+
+- [My Notes on Migrating from Vue CLI to Vite](vite-migration-notes.html)
