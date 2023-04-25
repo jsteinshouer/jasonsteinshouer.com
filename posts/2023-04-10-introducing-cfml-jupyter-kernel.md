@@ -87,17 +87,17 @@ This project is a Jupyter kernel that uses Python to interact with the CommandBo
 
 The IPython kernel has a concept called [magic commands](https://ipython.readthedocs.io/en/stable/interactive/magics.html) which are special commands that can be called in the notebook cell. I have implemented a couple commands for the CFML kernel.
 
-**$install**
+**%install**
 
 This command can be used to call the [CommandBox install command](https://commandbox.ortusbooks.com/package-management/installing-packages) to install packages from ForgeBox. 
 
-![$install qb](https://static.jasonsteinshouer.com/images/jupyter/Code_pxKLOOuMfw.png)
+![%install qb](https://static.jasonsteinshouer.com/images/jupyter/Code_HXXxPbBwNg.png)
 
-**$loadjar**
+**%loadjar**
 
 This is a wrapper for the CommandBox [classLoad](https://commandbox.ortusbooks.com/developing-for-commandbox/commands/loading-ad-hoc-jars#classload) method that will allow you to load custom jar and class files.
 
-![$loadjar](https://static.jasonsteinshouer.com/images/jupyter/Code_vWjnezmiSp.png)
+![%loadjar](https://static.jasonsteinshouer.com/images/jupyter/Code_6iJYpo4Tvy.png)
 
 ### CFML Examples
 
