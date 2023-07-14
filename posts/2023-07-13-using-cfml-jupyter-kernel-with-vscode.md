@@ -3,40 +3,21 @@ layout: post
 title: "Using the CFML Jupyter Kernel with VS Code"
 date: 2023-07-13
 tags: [CFML,Jupyter]
-excerpt: ""
+excerpt: "setup and use the CFML Jupyter Kernel locally with VS Code."
 permalink: "using-cfml-jupyter-kernel-with-vscode.html"
 ---
 
-I created a new CFML Jupyter Kernel powered by CommandBox. This project is open source, and hosted on GitHub at [https://github.com/jsteinshouer/cfml-jupyter-kernel](https://github.com/jsteinshouer/cfml-jupyter-kernel).
-
-
+My notes for how to setup and use the [CFML Jupyter Kernel](https://github.com/jsteinshouer/cfml-jupyter-kernel) locally with VS Code.
 
 ## Overview
 
+**Pre-requisites**
 
-[https://github.com/jsteinshouer/cfml-jupyter-kernel](https://github.com/jsteinshouer/cfml-jupyter-kernel)
+1. Download and install [Python](https://www.python.org/downloads/).
+2. Install VS Code + [Python Extension](https://marketplace.visualstudio.com/items?itemName=ms-python.python) + [Jupyter Extension](https://marketplace.visualstudio.com/items?itemName=ms-toolsai.jupyter)
+2. Install [CommandBox](https://www.ortussolutions.com/products/commandbox#download) v5.9.0+ and add it to the system path.
 
-Pre-requisites
-
-1. VS Code + [Python Extension](https://marketplace.visualstudio.com/items?itemName=ms-python.python) + [Jupyter Extension](https://marketplace.visualstudio.com/items?itemName=ms-toolsai.jupyter)
-2. Install [CommandBox](https://www.ortussolutions.com/products/commandbox#download) v5.9.0+ to the system path.
-3. [Python](https://www.python.org/downloads/)
-
-## Pre-requisites
-
-**VS Code**
-
-**CommandBox**
-
-The cfml-jupyter kernel uses the [CommandBox REPL]() so you will need to install version 5.9.0 or greater. 
-you can download it [here](https://www.ortussolutions.com/products/commandbox#download). Follow the [installation instructions](https://commandbox.ortusbooks.com/setup/installation) but make sure it is accesible in the system path.
-
-
-
-
-### Kernel Installation
-
-It can be installed from PyPi using `pip`.
+**Install the CFML Julyter Kernels**
 
 ```bash
 python -m pip install cfml-kernel
@@ -44,55 +25,67 @@ python -m cfml_kernel.cfscript.install
 python -m cfml_kernel.cfml.install
 ```
 
-In Windows I had to install them with the `--sys-prefix` flag to get VS Code to recognize them.
+**Note: Depending on your platform you may need to use the `--sys-prefix` flag on the last two commands to get VS code to recognize the Jupyter Kernels.
+
+## Pre-requisites
+
+### Python
+
+The CFML Jupyter Kernel is a Python module so Python is needed to run it. [Download](https://www.python.org/downloads/) and install the version for your platform. You could also use a package manager to install it as well. i.e. On Windows you could use the [Chocolatey package manager](https://chocolatey.org/).
+
+```bash
+choco install python
+```
+
+### VS Code
+
+I will assume if you are reading this you already have VS Code installed. You will also need to install the [Python Extension](https://marketplace.visualstudio.com/items?itemName=ms-python.python) and [Jupyter Extension](https://marketplace.visualstudio.com/items?itemName=ms-toolsai.jupyter) VS Code extensions.
+
+### CommandBox
+
+The cfml-jupyter kernel uses the [CommandBox REPL](https://commandbox.ortusbooks.com/usage/repl) so you will need to install version 5.9.0 or greater. 
+you can download it [here](https://www.ortussolutions.com/products/commandbox#download). Follow the [installation instructions](https://commandbox.ortusbooks.com/setup/installation) but make sure it is accesible in the system path.
+
+## Kernel Installation
+
+The CFML Jupyter Kernel package can be installed from PyPi using `pip`.
 
 ```bash
 python -m pip install cfml-kernel
+```
+
+Once the module is installed you need to use these commands to install the CFScript and Tag kernels so that Jupyter will recognize them.
+
+```bash
+python -m cfml_kernel.cfscript.install
+python -m cfml_kernel.cfml.install
+```
+
+In Windows I had to install them with the `--sys-prefix` flag to get VS Code to recognize them.
+
+```bash
 python -m cfml_kernel.cfscript.install --sys-prefix
 python -m cfml_kernel.cfml.install --sys-prefix
 ```
 
 Then after restarting VS Code they would be available as a kernel option.
 
-**MyBinder.org**
+## Usage
 
-This URL can be used to run the CFML Jupyter kernel and create and edit notebooks. The `urlpath` parameter can point to any notebook accessible on the internet or you can also upload one. 
+If all the above goes well, you should be able to create a new Jupyter notebook in VS Code by opening the Command Pallete (Ctrl+Shift+P) then typing `New Jupyter Notebook`.
 
-https://mybinder.org/v2/gh/jsteinshouer/cfml-jupyter-kernel/main?urlpath=/tree
+Then click Select Kernel.
 
-**Docker**
+![Select Kernel1](https://jasonsteinshouer.s3.us-west-2.amazonaws.com/images/jupyter/select-kernel-1.png)
 
-I have created a pre-built image with Jupyter, CommandBox, and the CFML kernel installed. Here is an example of how to run it.
+Select Jupyter Kernel...
 
-```bash
-docker run -v ${PWD}:/home/jovyan/work -p 8888:8888 -e JUPYTER_TOKEN=123 ghcr.io/jsteinshouer/cfml-jupyter:latest
-```
+![Select Kernel2](https://jasonsteinshouer.s3.us-west-2.amazonaws.com/images/jupyter/select-kernel-2.png)
 
+Then choose the kernel that you would like to use.
 
-**Github Codespaces / Dev Container**
+![Select Kernel3](https://jasonsteinshouer.s3.us-west-2.amazonaws.com/images/jupyter/select-kernel-3.png)
 
-Here is an example `devcontainer.json` file that can be used to run the CFML Kernel with Github Codespaces or the VS Code Dev Containers extension.
+You can then Use the +Code button to add new Code Cells. Type the code you want to execute then click the triangle shaped icon to execute the code. Variables should persist between code cell execution.
 
-```json
-{
-    "workspaceFolder": "/workspace",
-    "image": "ghcr.io/jsteinshouer/cfml-jupyter:latest"
-    "settings": {
-        "terminal.integrated.shell.linux": "/bin/bash"
-    },
-    "extensions": [
-		"formulahendry.auto-close-tag",
-		"kamasamak.vscode-cfml",
-		"ms-toolsai.jupyter",
-		"ms-python.python"
-	],
-    "forwardPorts": [
-        8888
-    ],
-    "remoteUser": "jovyan"
-}
-```
-
-### Next steps
-
-One thing I am looking to do next is add support for rendering other types of output some as html. There may be some other magic commands that could be useful as well. Please create an issue if you have any ideas.
+![CFML Kernel Usage Example](https://jasonsteinshouer.s3.us-west-2.amazonaws.com/images/jupyter/notebook-example.png)
