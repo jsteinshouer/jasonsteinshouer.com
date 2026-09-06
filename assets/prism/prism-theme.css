@@ -32,10 +32,13 @@
 	--tok-del-fg:   #f0a0a0;
 }
 
+/* No `background` here: Prism copies the language class up onto the <pre>,
+   and this file loads after site.css at equal specificity, so a reset here
+   silently wipes the code panel's own background layers. site.css owns the
+   panel's ground and its scroll cue. */
 code[class*="language-"],
 pre[class*="language-"] {
 	color: var(--ink);
-	background: none;
 	text-shadow: none;
 	font-family: var(--font-code);
 	direction: ltr;

@@ -377,6 +377,9 @@
 	input.addEventListener("input", function () { render(input.value); });
 
 	input.addEventListener("keydown", function (event) {
+		// A search input eats the first Escape to clear itself, so the dialog
+		// needed two presses. Take Escape before the input sees it.
+		if (event.key === "Escape") { event.preventDefault(); event.stopPropagation(); close(); return; }
 		if (event.key === "ArrowDown") { event.preventDefault(); setActive(activeIndex + 1); }
 		else if (event.key === "ArrowUp") { event.preventDefault(); setActive(activeIndex - 1); }
 		else if (event.key === "Enter") {
