@@ -3,45 +3,52 @@ layout: default
 title: Projects
 ---
 
-{% include header.html %}
+<div class="shell">
+	<div class="column column--wide">
 
-<main id="content" class="content" role="main">
+	<header class="page-head">
+		<h1 class="page-head__title">Projects</h1>
+		<p class="page-head__note">Things built and published, mostly to solve a problem that came up at work.</p>
+	</header>
 
-    {% for project in collections.projects %}
-    <article class="post">
-      <header class="post-header">
-            <h2 class="post-title">
-                {% if project.templateContent.size > 0 %}
-                    <a href="{{ project.url }}">{{ project.data.name }}<a/>
-                {% else %}
-                    {{ project.data.name }}
-                {% endif %}
-            </h2>
-        </header>
-        <section class="post-meta">
-            {% if project.data.icons.size > 0 %}
-                {% for icon in project.data.icons %}
-                    <i class="{{icon}} fa-2x"></i>
-                {% endfor %} 
-            {% endif %}
-        </section>
-        <section class="post-meta" style="font-size: 1.2em; margin-bottom: 20px">
-            {% if project.data.technology.size > 0 %}
-                    {{ project.data.technology| array_to_sentence_string }} 
-            {% endif %}
-        </section>
-        <section class="post-excerpt">
-            {{ project.data.description }}
-        </section>
-        <footer class="post-meta">
-            <a href="{{ project.data.code_url }}" target="_blank">View Code</a>
-            {% if project.data.project_url %}
-                | <a href="{{ project.data.project_url }}" target="_blank">View Project</a> 
-            {% endif %}
+		<ul class="project-list">
+			{%- for project in collections.projects %}
+			<li class="project">
+				<div class="project__main">
+					<h2 class="project__name">
+						{%- if project.templateContent.size > 0 -%}
+							<a href="{{ project.url }}">{{ project.data.name }}</a>
+						{%- else -%}
+							{{ project.data.name }}
+						{%- endif -%}
+					</h2>
+					<p class="project__description">{{ project.data.description }}</p>
+				</div>
+				<div class="project__side">
+					{%- if project.data.technology.size > 0 %}
+					<ul class="tags">
+						{%- for tech in project.data.technology %}
+						<li><span class="tag">{{ tech }}</span></li>
+						{%- endfor %}
+					</ul>
+					{%- endif %}
+					<div class="project__links">
+						<a href="{{ project.data.code_url | strip }}" rel="noopener">
+							<svg aria-hidden="true"><use href="#i-github" /></svg> Code
+						</a>
+						{%- if project.data.project_url %}
+						<a href="{{ project.data.project_url | strip }}" rel="noopener">
+							<svg aria-hidden="true"><use href="#i-external" /></svg> Live
+						</a>
+						{%- endif %}
+						{%- if project.templateContent.size > 0 %}
+						<a href="{{ project.url }}">Details</a>
+						{%- endif %}
+					</div>
+				</div>
+			</li>
+			{%- endfor %}
+		</ul>
 
-            {% if project.templateContent.size > 0 %}  | <a href="{{ project.url }}">More</a> {% endif %}
-         </footer>
-    </article>
-    {% endfor %}
-
-</main>
+	</div>
+</div>

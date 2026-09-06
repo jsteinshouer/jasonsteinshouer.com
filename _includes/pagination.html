@@ -1,9 +1,21 @@
-<nav class="pagination" role="pagination">
-    {% if pagination.href.previous %}
-        <a class="newer-posts" href="{{ pagination.href.previous }}" title="Previous Page">&laquo; Newer Posts</a>
-    {% endif %}
-    <span class="page-number"> Page {{ pagination.pageNumber | plus: 1 }} of {{ pagination.pages.size }} </span>
-    {% if pagination.href.next %} 
-        <a class="older-posts" href="{{ pagination.href.next }}" title="Next Page">Older Posts &raquo;</a>
-    {% endif %} 
+{%- if pagination.pages.size > 1 %}
+<nav class="pagination" aria-label="Pagination">
+	{%- if pagination.href.previous %}
+	<a class="newer-posts" href="{{ pagination.href.previous }}" rel="prev">
+		<svg aria-hidden="true"><use href="#i-arrow-left" /></svg> Newer
+	</a>
+	{%- else %}
+	<span></span>
+	{%- endif %}
+
+	<span class="pagination__count">Page {{ pagination.pageNumber | plus: 1 }} of {{ pagination.pages.size }}</span>
+
+	{%- if pagination.href.next %}
+	<a class="older-posts" href="{{ pagination.href.next }}" rel="next">
+		Older <svg aria-hidden="true"><use href="#i-arrow-right" /></svg>
+	</a>
+	{%- else %}
+	<span></span>
+	{%- endif %}
 </nav>
+{%- endif %}

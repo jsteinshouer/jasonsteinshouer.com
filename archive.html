@@ -1,0 +1,38 @@
+---
+layout: default
+title: Archive
+permalink: /archive/
+---
+
+<div class="shell">
+	<div class="column column--wide">
+
+	<header class="page-head">
+		<h1 class="page-head__title">Archive</h1>
+		<p class="page-head__note">Everything published here, newest first. {{ collections.posts.size }} posts across {{ collections.postsByYear.size }} years.</p>
+	</header>
+
+		{%- for group in collections.postsByYear %}
+		<section class="archive-year">
+			<header class="archive-year__heading">
+				<h2 class="archive-year__number">{{ group.year }}</h2>
+				<span class="archive-year__count">{{ group.posts.size }} post{% if group.posts.size != 1 %}s{% endif %}</span>
+			</header>
+			<ul class="archive-list">
+				{%- for post in group.posts %}
+				<li class="archive-item">
+					<time class="archive-item__date" datetime="{{ post.date | iso_date }}">{{ post.date | short_date }}</time>
+					<a class="archive-item__title" href="{{ post.url }}">{{ post.data.title }}</a>
+					{%- if post.data.tags.size > 0 %}
+					<span class="archive-item__tags">{{ post.data.tags | array_to_sentence_string }}</span>
+					{%- else %}
+					<span class="archive-item__tags"></span>
+					{%- endif %}
+				</li>
+				{%- endfor %}
+			</ul>
+		</section>
+		{%- endfor %}
+
+	</div>
+</div>

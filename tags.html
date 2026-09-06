@@ -1,0 +1,30 @@
+---
+layout: default
+title: Tags
+permalink: /tags/
+---
+
+<div class="shell">
+	<div class="column column--wide">
+
+	<header class="page-head">
+		<h1 class="page-head__title">Tags</h1>
+		<p class="page-head__note">Every subject the archive covers, sized and ordered by how much of it each one carries.</p>
+	</header>
+
+		<ul class="tag-index">
+			{%- for tag in collections.tagsWithCount %}
+			{%- if tag.count >= 10 %}{% assign weight = "1" %}
+			{%- elsif tag.count >= 5 %}{% assign weight = "2" %}
+			{%- elsif tag.count >= 3 %}{% assign weight = "3" %}
+			{%- else %}{% assign weight = "4" %}{% endif %}
+			<li>
+				<a class="tag" href="/tag/{{ tag.slug }}/" data-weight="{{ weight }}">
+					{{ tag.name }} <span class="tag__count">{{ tag.count }}</span>
+				</a>
+			</li>
+			{%- endfor %}
+		</ul>
+
+	</div>
+</div>
