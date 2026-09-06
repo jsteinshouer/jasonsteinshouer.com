@@ -84,7 +84,7 @@
 	--accent-deep:  #0a5140;
 	--accent-wash:  #e7f1ed;
 	--select:       #cfe6dd;
-	--code-fade:    rgba(26, 28, 27, 0.13);
+	--code-cue:     #767c78;
 
 	--font-read: "Source Serif 4", Charter, "Bitstream Charter", "Iowan Old Style", Georgia, serif;
 	--font-ui: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
@@ -121,7 +121,7 @@
 	--accent-deep:  #8ee7c9;
 	--accent-wash:  #17251f;
 	--select:       #1e4438;
-	--code-fade:    rgba(228, 229, 225, 0.16);
+	--code-cue:     #767e78;
 }
 
 /* --------------------------------------------------------------------------
@@ -862,16 +862,19 @@ time, .tabular { font-variant-numeric: tabular-nums; font-feature-settings: "tnu
 	tab-size: 4;
 	-moz-tab-size: 4;
 
-	/* Two layers scroll with the content and two stay put, so each shadow
-	   appears only while there is code past that edge. */
+	/* Two masks in the panel's own stock scroll with the content; two 2px
+	   rules stay put, so a rule shows only while there is code past that
+	   edge. The rules sit inside the panel's padding, where no glyph is ever
+	   painted — a wash here would sit behind the code and cost it contrast
+	   that a background-color audit cannot see. */
 	background-image:
 		linear-gradient(to right, var(--paper-sunk) 45%, rgba(0, 0, 0, 0)),
 		linear-gradient(to left, var(--paper-sunk) 45%, rgba(0, 0, 0, 0)),
-		radial-gradient(farthest-side at 0 50%, var(--code-fade), rgba(0, 0, 0, 0)),
-		radial-gradient(farthest-side at 100% 50%, var(--code-fade), rgba(0, 0, 0, 0));
+		linear-gradient(var(--code-cue), var(--code-cue)),
+		linear-gradient(var(--code-cue), var(--code-cue));
 	background-position: 0 0, 100% 0, 0 0, 100% 0;
 	background-repeat: no-repeat;
-	background-size: 3rem 100%, 3rem 100%, 1.1rem 100%, 1.1rem 100%;
+	background-size: 3rem 100%, 3rem 100%, 2px 100%, 2px 100%;
 	background-attachment: local, local, scroll, scroll;
 }
 .prose pre code {
