@@ -11,7 +11,7 @@ web
 Three real audiences, all confirmed by the site owner, in descending order of traffic but not of importance:
 
 1. **Developers who arrived from a search engine with a specific problem.** They land deep — on a single post, not the homepage — carrying a concrete question ("how do I generate a ColdFusion thread dump", "how do I sign a JWT in CFML", "why does my Docker path break under Bash for Windows"). They are at work, often blocked, and reading on whatever screen is in front of them. Success is that the post answers the question and they can lift working code out of it. Most of them will never see the homepage.
-2. **Peers, recruiters, conference organizers, and prospective clients sizing Jason up.** They arrive at the root or via a link someone sent them and read laterally — About, the projects list, the range and recency of posts — to answer "what does this person actually know and build?" The blog and the projects collection both carry professional weight; neither is decoration.
+2. **Peers, recruiters, conference organizers, and prospective clients sizing Jason up.** They arrive at the root or via a link someone sent them and read laterally — About, the archive, the range and recency of posts — to answer "what does this person actually know and build?" The writing carries that weight on its own; the projects pages were retired in September 2025, so the posts and the archive are now the whole of what a stranger can read.
 3. **Jason himself, as the archive's primary reader.** The site is the durable record of what he has learned and built, written so future-Jason can find the answer again. This is the site's founding purpose and is not subordinate to the other two.
 
 These audiences share one page set. No audience gets a separate site, and content is not rewritten for any one of them.
@@ -20,7 +20,7 @@ These audiences share one page set. No audience gets a separate site, and conten
 
 A personal technical blog and project record at **jasonsteinshouer.com**, published since June 2016 by Jason Steinshouer, a working software developer in Omaha, NE. It exists to document what he is learning, working on, or finds interesting — and, in doing so, to help the next developer with the same problem and to represent his work publicly.
 
-Success is measured in usefulness, not volume: a post that solves a stranger's problem years after it was written, a project page that gets a library adopted, and an archive Jason himself keeps returning to. The publishing cadence is deliberate and irregular (roughly one to six posts a year since 2016), so the site must read as current and well-kept even during quiet stretches.
+Success is measured in usefulness, not volume: a post that solves a stranger's problem years after it was written, and an archive Jason himself keeps returning to. The publishing cadence is deliberate and irregular (roughly one to six posts a year since 2016), so the site must read as current and well-kept even during quiet stretches.
 
 ## Positioning
 
@@ -32,19 +32,19 @@ The corpus is correspondingly broad — CFML/ColdFusion work (CommandBox, CFLint
 
 ## Operating Context
 
-- **Authoring:** Markdown files in `posts/`, one per post, named `YYYY-MM-DD-slug.md`, with YAML front matter (`title`, `date`, `tags`, `excerpt`, and often an explicit `permalink`). `posts/posts.json` supplies the shared layout and the default dated permalink. Projects are Markdown in `projects/` with `name`, `description`, `code_url`, optional `project_url`, `technology`, and optional Font Awesome `icons`.
+- **Authoring:** Markdown files in `posts/`, one per post, named `YYYY-MM-DD-slug.md`, with YAML front matter (`title`, `date`, `tags`, `excerpt`, and often an explicit `permalink`). `posts/posts.json` supplies the shared layout and the default dated permalink. The `projects/` Markdown files are still in the repo but are excluded from the build through `.eleventyignore`; nothing renders them.
 - **Posts are code-dense.** Nearly every post carries multiple fenced or indented code blocks — CFML, JavaScript, C#, shell, XML, JSON — plus inline links to GitHub repos and external docs. Prism handles highlighting. Long posts also use footnotes and heading anchors (markdown-it-anchor, markdown-it-footnote). Some posts are multi-part series (Node streams I/II, snapshot testing I/II, the OWASP Top 10 sequence).
 - **Publishing:** commit to `main` on `github.com/jsteinshouer/jasonsteinshouer.com`; Netlify builds with `npm run build` and publishes `_site`.
-- **Reading:** paginated homepage (15 posts per page, newest first), per-tag index pages at `/tag/<slug>/`, a projects index, an About page, a 404, and an Atom/RSS feed at `/feed.xml`.
+- **Reading:** paginated homepage (15 posts per page, newest first), per-tag index pages at `/tag/<slug>/`, a tag index at `/tags/`, a year-grouped archive at `/archive/`, client-side search over `/search.json`, an About page, a 404, and an Atom/RSS feed at `/feed.xml`.
 
 ## Capabilities and Constraints
 
 **Fixed — future work must not break these:**
 
-- **Existing URLs.** Two permalink shapes are both in production and both hold years of inbound links and search rankings: the dated default `/YYYY/MM/DD/slug.html` and per-post overrides like `/xunit-test-runner-for-notebooks.html`. Tag pages live at `/tag/<slug>/`, the About page at `/about.html`, projects under `/projects/`. No redesign may change an existing URL.
+- **Existing URLs.** Two permalink shapes are both in production and both hold years of inbound links and search rankings: the dated default `/YYYY/MM/DD/slug.html` and per-post overrides like `/xunit-test-runner-for-notebooks.html`. Tag pages live at `/tag/<slug>/` and the About page at `/about.html`. No redesign may change an existing URL. The one deliberate exception, made by the owner in September 2025: the four `/projects/` addresses were retired and now 301 to `/archive/` via `netlify.toml`, so the promise is kept by redirect rather than by the page.
 - **The feed.** `/feed.xml` must keep working and keep its existing entry identity for current subscribers.
 - **The stack.** Eleventy (currently 1.x) with **Liquid** templates via `liquidjs`, the `_includes/` layout chain, `_data/metadata.json` as the site metadata source, the markdown-it pipeline with anchor and footnote plugins, `eleventy-navigation`, `eleventy-plugin-rss`, and `assets/` passthrough copy. Netlify build config stays as-is. Custom Liquid filters in `.eleventy.js` (`excerpt`, `tag_list`, `array_to_sentence_string`, `date_to_string`) and the `year` shortcode are part of the contract templates rely on.
-- **Content.** Every published post and project stays published, with its text unchanged. Front-matter authoring conventions should keep working without a mass rewrite of 38 existing files.
+- **Content.** Every published post stays published, with its text unchanged. (Projects were the exception, retired by the owner in September 2025; the sources remain in the repo, unpublished.) Front-matter authoring conventions should keep working without a mass rewrite of 38 existing files.
 
 **Explicitly not fixed — free to change or replace:**
 
@@ -69,8 +69,8 @@ The corpus is correspondingly broad — CFML/ColdFusion work (CommandBox, CFLint
 ## Evidence on Hand
 
 - **38 published posts**, June 2016 through April 2025, in `posts/`. Real, first-person, code-bearing.
-- **3 project entries** in `projects/`: `cf-jwt-simple` (CFML JWT library, a port of node-jwt-simple), `commandbox-cflint` (CommandBox module for CFLint), and `stock-trader`. Each links to a public GitHub repository.
-- **Additional shipped work referenced in posts** but not yet given a project entry: a CFML Jupyter kernel, an xUnit notebook test runner, and a 2021 GitHub Actions Hackathon submission.
+- **3 project write-ups** in `projects/` — `cf-jwt-simple` (CFML JWT library, a port of node-jwt-simple), `commandbox-cflint` (CommandBox module for CFLint), and `stock-trader` — each linking to a public GitHub repository. These are **no longer published**; the files are retained unbuilt, so restoring them is a config change rather than a rewrite.
+- **Additional shipped work referenced in posts**: a CFML Jupyter kernel, an xUnit notebook test runner, and a 2021 GitHub Actions Hackathon submission. None of it has a page on the site.
 - **Tag distribution** (usable as real navigational data): CFML 24, Vue.js 7, Security 5, OWASP 4, then TestBox / Refactoring / Legacy Code / Jupyter / JavaScript / GitHub / Docker / CommandBox / ColdFusion / ColdBox / CFLint at 3 each, with a long tail of single-use tags.
 - **Author bio facts**, from `about.md`: husband and father in Omaha, NE; software developer by profession; interests include family, camping and fishing, guitar, cooking, and gluten-free home brewing.
 

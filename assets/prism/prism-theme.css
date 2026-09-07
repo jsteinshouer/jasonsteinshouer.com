@@ -18,7 +18,7 @@
 }
 
 :root[data-theme="dark"] {
-	--tok-comment:  #868d88;
+	--tok-comment:  #9aa096;
 	--tok-punct:    #9aa09b;
 	--tok-name:     #e0a267;
 	--tok-string:   #59d6ae;
@@ -26,8 +26,8 @@
 	--tok-function: #7fbdf2;
 	--tok-const:    #c1a3f0;
 	--tok-var:      #e4e5e1;
-	--tok-ins-bg:   #14291f;
-	--tok-del-bg:   #2c1a1a;
+	--tok-ins-bg:   #1d3328;
+	--tok-del-bg:   #362325;
 	--tok-ins-fg:   #7fe0bb;
 	--tok-del-fg:   #f0a0a0;
 }

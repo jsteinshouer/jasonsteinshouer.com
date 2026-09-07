@@ -109,17 +109,20 @@
 :root[data-theme="dark"] {
 	color-scheme: dark;
 
-	--paper:        #101211;
-	--paper-sunk:   #191c1a;
-	--paper-raised: #171a18;
-	--ink:          #e4e5e1;
-	--ink-soft:     #9aa09b;
-	--ink-faint:    #868d88;
-	--rule:         #282c29;
-	--rule-strong:  #3a403c;
+	/* A blue slate rather than near-black, with warm cream ink — carried over
+	   from the notebook variation, where it read better for long reading at
+	   night than a near-black ground with neutral white on it. */
+	--paper:        #1c2124;
+	--paper-sunk:   #242a2d;
+	--paper-raised: #232a2e;
+	--ink:          #ece5d8;
+	--ink-soft:     #a7a89e;
+	--ink-faint:    #93958c;
+	--rule:         #414444;
+	--rule-strong:  #5f605e;
 	--accent:       #59d6ae;
 	--accent-deep:  #8ee7c9;
-	--accent-wash:  #17251f;
+	--accent-wash:  #22322c;
 	--select:       #1e4438;
 	--code-cue:     #767e78;
 }
