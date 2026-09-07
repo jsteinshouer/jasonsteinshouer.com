@@ -261,7 +261,7 @@ Warm off-white paper against near-black ink, with one green that earns its place
 
 **The Retune-Don't-Transplant Rule.** An imported palette is retuned against the ground it lands on, never pasted. Translucent rules are flattened to opaque values on the new stock; `accent-wash` is re-picked so it still sits *above* its ground in luminance rather than below it (0.0280 against a 0.0146 paper and a 0.0222 sunk paper); and every syntax token is re-measured against the new panel. A value that was correct on the source's ground is a claim, not a fact, until it is measured on this one.
 
-**The 4.5 Rule.** `ink-faint` is the floor for every piece of metadata text and it clears 4.5:1 against paper, sunk paper, and raised paper in both themes. Any new muted text uses `ink-faint`; do not invent a lighter gray for "quieter" text. The audit test is a computed one, not a static one: walk every text-bearing element, resolve its real background up the ancestor chain, and apply the large-text threshold. The current build returns zero failures across 1,811 elements in both themes.
+**The 4.5 Rule.** `ink-faint` is the floor for every piece of metadata text and it clears 4.5:1 against paper, sunk paper, and raised paper in both themes. Any new muted text uses `ink-faint`; do not invent a lighter gray for "quieter" text. The audit test is a computed one, not a static one: walk every text-bearing element, resolve its real background up the ancestor chain, and apply the large-text threshold. The current build returns zero failures across 1,797 elements in both themes.
 
 **The Sunk-Ground Rule.** Syntax tokens are content and are measured against `paper-sunk`, the code panel's ground — never against `paper`. Measuring a syntax color against the page ground overstates it by roughly 0.4:1 and will pass a color that fails in the panel. Any new language's token colors clear 4.5:1 on `paper-sunk` in both themes before they ship. Reconfirmed against the current dark panel (`{colors.paper-sunk-dark}`): all eight tokens land between 5.43:1 and 11.49:1, with prose ink at 11.61:1 on the same ground.
 
@@ -351,7 +351,9 @@ Nothing is a pill, nothing is heavily rounded, and no shape is decorative.
 
 Borders are the primary form-giver: every panel, tag, control, and divider is a 1px hairline. Hover states shift border color (often to `color-mix(in srgb, var(--accent) 45%, transparent)`) rather than adding weight, so nothing shifts by a pixel on hover.
 
-Icons are a single authored SVG sprite of 11 symbols inlined in the document — 24×24 grid, `fill: none`, `stroke: currentColor`, `stroke-width: 1.6` (1.8 for the check), round caps and joins — rendered at 0.875–1.125rem. There is no icon font and no icon package.
+Icons are a single authored SVG sprite of 10 symbols inlined in the document — 24×24 grid, `fill: none`, `stroke: currentColor`, `stroke-width: 1.6` (1.8 for the check), round caps and joins — rendered at 0.875–1.125rem. There is no icon font and no icon package.
+
+**The Sprite-Has-Two-Callers Rule.** Symbols are referenced from markup *and* from the script, which composes `#i-` + id at runtime (`i-copy` and `i-check` have no markup reference at all). Never prune the sprite on a markup grep alone; check `assets/js/site.js` first.
 
 ## Components
 
@@ -391,7 +393,7 @@ The site's most important component. A `paper-sunk` panel with a 1px `rule` bord
 
 ### Retired
 
-The projects index and the project detail page were removed from the build: no `projects` collection, no templates, and Projects is out of the masthead. `/projects` and `/projects/*` are 301s to `/archive/`, so the published addresses keep their promise. The `.project*` rules still sitting in the stylesheet are dead and are not part of the system; do not build a new surface from them.
+The projects index and the project detail page were removed from the build — no `projects` collection, no templates, no Projects in the masthead — and their CSS was removed with them, along with the `i-external` sprite symbol that only they consumed. Nothing of the surface remains to build from. `/projects` and `/projects/*` are 301s to `/archive/`, so the published addresses keep their promise, and the three `projects/*.md` sources stay in the repo unbuilt via `.eleventyignore`.
 
 ### Table of contents (signature)
 Dual expression of one JS-built list. At 78em and up, a sticky rail in the right outer margin — `top: 6rem`, max 15rem wide, left hairline, sans 0.8125rem, `ink-soft` links, the current heading in accent/600 tracked by an IntersectionObserver. Below 78em the same list renders as a `<details>` panel above the prose with a rotating chevron drawn from two 1.5px borders. Both are `hidden` until JS populates them, so a post with no headings shows nothing.
