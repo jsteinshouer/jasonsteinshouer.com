@@ -1,20 +1,14 @@
 ---
 layout: default
-post_class: post-template page-template
 ---
 
-{% include header.html %}
-
-
-<main class="content" role="main">
-    <article class="post">
-
-        <h1 class="post-title">{{ page.title }}</h1>
-
-        <section class="post-content">
-            {{content}}
-        </section>
-
-    </article>
-
-</main>
+<div class="shell">
+	<article class="column">
+		<header class="page-head">
+			<h1 class="page-head__title">{{ title }}</h1>
+		</header>
+		<div class="prose">
+			{{ content }}
+		</div>
+	</article>
+</div>

@@ -2,46 +2,97 @@
 layout: default
 disqus: false
 archive: false
-post_class: post-template
 ---
 
-{% include header.html %}
+{%- assign older = collections.posts | previous_post: page.url -%}
+{%- assign newer = collections.posts | next_post: page.url -%}
+{%- assign related = collections.posts | related_posts: page.url, tags, 3 -%}
 
-<main class="content" role="main">
+<div class="shell article-layout">
 
-    <article class="post">
+	<article class="article">
 
-        <header class="post-header">
-            <h1 class="post-title">{{ title }}</h1>
-            <section class="post-meta">
-                {% if tags.size > 0 %}
-                    {{ tags | tag_list }} 
-                {% endif %}
-                <time class="post-date" datetime="{{ page.date | date:"%Y-%m-%d" }}">{{ page.date | date_to_string }}</time>
-            </section>
-        </header>
+		<header class="article__header">
+			<h1 class="article__title">{{ title }}</h1>
+			{%- if subtitle and subtitle != "" %}
+			<p class="article__subtitle">{{ subtitle }}</p>
+			{%- endif %}
 
-        <section class="post-content">
-            {{content}}
-        </section>
+			<div class="article__meta">
+				<time datetime="{{ page.date | iso_date }}">{{ page.date | date_to_string }}</time>
+				{%- if tags.size > 0 %}
+				<ul class="tags">
+					{%- for tag in tags %}
+					<li><a class="tag" href="/tag/{{ tag | slug }}/">{{ tag }}</a></li>
+					{%- endfor %}
+				</ul>
+				{%- endif %}
+			</div>
+		</header>
 
-        {% if page.archive %}
-        <section class="archive">
-            <h5>Archive</h5>
-            <ul>
-                {% for post in site.posts %}
-                    <li><span>{{ post.date | date_to_string }}</span>  <a href="{{ post.url }}">{{ post.title }}</a></li>
-                {% endfor %}
-            </ul>
-        </section>
-        {% endif %}
+		<details class="toc-inline" data-toc-inline hidden>
+			<summary>On this page</summary>
+		</details>
 
-        <footer class="post-footer">
+		<div class="prose">
+			{{ content }}
+		</div>
 
-     
+		<footer class="article__footer">
 
-        </footer>
+			<div class="byline">
+				<img class="byline__avatar" src="/assets/img/jason.jpg" width="52" height="52" alt="" loading="lazy" />
+				<div class="byline__body">
+					<p class="byline__name">{{ metadata.author.name }}</p>
+					<p class="byline__bio">Software developer in Omaha, NE. Writing here since 2016, documenting what I’m learning, working on, or just find interesting.</p>
+					<div class="byline__links">
+						<a href="https://github.com/{{ metadata.author.github }}" rel="noopener">
+							<svg aria-hidden="true"><use href="#i-github" /></svg> github.com/{{ metadata.author.github }}
+						</a>
+						<a href="{{ metadata.feed.path }}">
+							<svg aria-hidden="true"><use href="#i-rss" /></svg> Subscribe
+						</a>
+					</div>
+				</div>
+			</div>
 
-    </article>
+			{%- if related.size > 0 %}
+			<section class="related">
+				<h2 class="section-label">Related posts</h2>
+				<ul class="related__list">
+					{%- for post in related %}
+					<li class="related__item">
+						<a href="{{ post.url }}">{{ post.data.title }}</a>
+						<time datetime="{{ post.date | iso_date }}">{{ post.date | date_to_string }}</time>
+					</li>
+					{%- endfor %}
+				</ul>
+			</section>
+			{%- endif %}
 
-</main>
+			{%- if older or newer %}
+			<nav class="post-nav" aria-label="More posts">
+				{%- if older %}
+				<a class="post-nav__link post-nav__link--prev" href="{{ older.url }}">
+					<span class="post-nav__dir">Older post</span>
+					<span class="post-nav__title">{{ older.data.title }}</span>
+				</a>
+				{%- else %}
+				<span></span>
+				{%- endif %}
+				{%- if newer %}
+				<a class="post-nav__link post-nav__link--next" href="{{ newer.url }}">
+					<span class="post-nav__dir">Newer post</span>
+					<span class="post-nav__title">{{ newer.data.title }}</span>
+				</a>
+				{%- endif %}
+			</nav>
+			{%- endif %}
+
+		</footer>
+
+	</article>
+
+	<aside class="toc" data-toc hidden aria-label="Table of contents"></aside>
+
+</div>

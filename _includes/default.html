@@ -1,60 +1,164 @@
 <!DOCTYPE html>
-<html>
+<html lang="{{ metadata.language }}">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    {% if page.layout == 'post' %}
-    <title>{{ title }}</title>
-    {% else %}
-    <title>{{ metadata.title }} - {{ metadata.description }}</title>
-    {% endif %}
-    <meta name="description" content="{{ metadata.description }}" />
+	{%- if layout == 'post' -%}
+		{%- assign page_title = title | append: " — " | append: metadata.title -%}
+		{%- if excerpt and excerpt != "" -%}
+			{%- assign page_description = excerpt -%}
+		{%- else -%}
+			{%- assign page_description = content | summary: 180 -%}
+		{%- endif -%}
+	{%- elsif page.url == '/' -%}
+		{%- assign page_title = metadata.title | append: " — " | append: metadata.description -%}
+		{%- assign page_description = metadata.description -%}
+	{%- else -%}
+		{%- assign page_title = title | default: metadata.title | append: " — " | append: metadata.title -%}
+		{%- assign page_description = metadata.description -%}
+	{%- endif -%}
 
-    <meta name="HandheldFriendly" content="True" />
-    <meta name="MobileOptimized" content="320" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>{{ page_title }}</title>
+	<meta name="description" content="{{ page_description | strip_tags | escape }}" />
+	<link rel="canonical" href="{{ page.url | abs_url }}" />
 
-    <link rel="stylesheet" href="/assets/prism/prism-light.css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+	<meta property="og:type" content="{% if layout == 'post' %}article{% else %}website{% endif %}" />
+	{%- if layout == 'post' %}
+	<meta property="article:published_time" content="{{ page.date | iso_date }}" />
+	<meta property="article:author" content="{{ metadata.author.name }}" />
+	{%- endif %}
+	<meta property="og:site_name" content="{{ metadata.title }}" />
+	<meta property="og:title" content="{{ page_title }}" />
+	<meta property="og:description" content="{{ page_description | strip_tags | escape }}" />
+	<meta property="og:url" content="{{ page.url | abs_url }}" />
+	<meta name="twitter:card" content="summary" />
 
-    <link rel="stylesheet" type="text/css" href="/assets/css/screen.css" />
-    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400" />
-    <!-- Customisation  -->
-    <link rel="stylesheet" type="text/css" href="/assets/css/main.css" />
+	<meta name="theme-color" content="#fbfbfa" media="(prefers-color-scheme: light)" />
+	<meta name="theme-color" content="#1c2124" media="(prefers-color-scheme: dark)" />
 
+	<link rel="alternate" type="application/atom+xml" title="{{ metadata.title }}" href="{{ metadata.feed.path }}" />
+
+	<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/ss4-normal-latin.woff2" crossorigin />
+	<link rel="preload" as="font" type="font/woff2" href="/assets/fonts/jbm-normal-latin.woff2" crossorigin />
+
+	<link rel="stylesheet" href="/assets/css/site.css" />
+	<link rel="stylesheet" href="/assets/prism/prism-theme.css" />
+
+	<script>
+		/* Resolve the theme before first paint so the page never flashes. */
+		(function () {
+			try {
+				var stored = localStorage.getItem("theme");
+				var theme = stored || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+				document.documentElement.setAttribute("data-theme", theme);
+			} catch (e) {
+				document.documentElement.setAttribute("data-theme", "light");
+			}
+		})();
+	</script>
 </head>
-<body class="{% if page.post_class %}{{page.post_class}}{% endif %} ">
+<body>
 
-    {{ content }}
-    <footer class="site-footer clearfix">
-      <section class="copyright">
-        <a href="{{ metadata.url }}">{{ metadata.title }}</a> &copy; 
-              {% year %}
-      </section>
-      <section class="poweredby">POWERED BY ELEVENTY USING THE
-        <a href="http://github.com/rosario/kasper">KASPER THEME</a>
-      </section>
-    </footer>
-    
-    <script type="text/javascript" src="/assets/js/jquery-1.11.1.min.js"></script>
-    <script type="text/javascript" src="/assets/js/jquery.fitvids.js"></script>
-    <script src="/assets/prism/prism.js"></script>
-    <script type="text/javascript" src="/assets/js/index.js"></script>
+<svg xmlns="http://www.w3.org/2000/svg" class="visually-hidden" aria-hidden="true" focusable="false">
+	<symbol id="i-github" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+		<path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+	</symbol>
+	<symbol id="i-rss" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+		<path d="M4 11a9 9 0 0 1 9 9"/><path d="M4 4a16 16 0 0 1 16 16"/><circle cx="5" cy="19" r="1.5"/>
+	</symbol>
+	<symbol id="i-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+		<circle cx="11" cy="11" r="7"/><path d="m20 20-3.9-3.9"/>
+	</symbol>
+	<symbol id="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+		<circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2M12 19.5v2M4.2 4.2l1.4 1.4M18.4 18.4l1.4 1.4M2.5 12h2M19.5 12h2M4.2 19.8l1.4-1.4M18.4 5.6l1.4-1.4"/>
+	</symbol>
+	<symbol id="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+		<path d="M20.5 14.4A8.6 8.6 0 0 1 9.6 3.5a8.6 8.6 0 1 0 10.9 10.9Z"/>
+	</symbol>
+	<symbol id="i-copy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+		<rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+	</symbol>
+	<symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+		<path d="m4 12.5 5 5L20 6.5"/>
+	</symbol>
+	<symbol id="i-arrow-left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+		<path d="M19 12H5M11 6l-6 6 6 6"/>
+	</symbol>
+	<symbol id="i-arrow-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+		<path d="M5 12h14M13 6l6 6-6 6"/>
+	</symbol>
+	<symbol id="i-archive" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+		<rect x="3" y="4" width="18" height="4" rx="1"/><path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8M10 12h4"/>
+	</symbol>
+</svg>
 
-    <!-- Google Analytics Tracking code -->
-    <script type="text/javascript">
+<a class="skip-link" href="#content">Skip to content</a>
 
-      var _gaq = _gaq || [];
-      _gaq.push(['_setAccount', '{{ metadata.google_analytics }}']);
-      _gaq.push(['_trackPageview']);
+<header class="masthead" id="masthead">
+	<div class="shell masthead__inner">
+		<a class="wordmark" href="/">Jason Steinshouer</a>
 
-      (function() {
-        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-      })();
+		<nav class="site-nav" aria-label="Primary">
+			<a href="/"{% if page.url == '/' %} aria-current="page"{% endif %}>Writing</a>
+			<a href="/tags/"{% if page.url == '/tags/' %} aria-current="page"{% endif %}>Tags</a>
+			<a href="/archive/"{% if page.url == '/archive/' %} aria-current="page"{% endif %}>Archive</a>
+			<a href="/about.html"{% if page.url == '/about.html' %} aria-current="page"{% endif %}>About</a>
+		</nav>
 
-    </script>   
+		<div class="masthead__tools">
+			<button type="button" class="icon-button icon-button--search" data-search-open aria-label="Search posts">
+				<svg aria-hidden="true"><use href="#i-search" /></svg>
+				<span class="icon-button__label">Search</span>
+				<span class="kbd" aria-hidden="true">/</span>
+			</button>
+			<button type="button" class="icon-button theme-toggle" data-theme-toggle aria-label="Switch to dark theme">
+				<svg class="icon-sun" aria-hidden="true"><use href="#i-sun" /></svg>
+				<svg class="icon-moon" aria-hidden="true"><use href="#i-moon" /></svg>
+			</button>
+		</div>
+	</div>
+</header>
+
+<main class="site-main" id="content">
+	{{ content }}
+</main>
+
+<footer class="site-footer">
+	<div class="shell site-footer__inner">
+		<span>&copy; {% year %} {{ metadata.author.name }} &middot; Omaha, NE</span>
+		<nav class="site-footer__links" aria-label="Elsewhere">
+			<a href="https://github.com/{{ metadata.author.github }}" rel="me noopener">
+				<svg aria-hidden="true"><use href="#i-github" /></svg> GitHub
+			</a>
+			<a href="{{ metadata.feed.path }}">
+				<svg aria-hidden="true"><use href="#i-rss" /></svg> RSS
+			</a>
+			<a href="/archive/">
+				<svg aria-hidden="true"><use href="#i-archive" /></svg> Archive
+			</a>
+		</nav>
+	</div>
+</footer>
+
+<dialog class="search-dialog" id="search-dialog" aria-label="Search posts">
+	<div class="search-dialog__scrim" data-search-close></div>
+	<div class="search-panel">
+		<div class="search-field">
+			<svg aria-hidden="true"><use href="#i-search" /></svg>
+			<input type="search" id="search-input" placeholder="Search {{ collections.posts.size }} posts…" autocomplete="off" spellcheck="false" aria-label="Search posts" aria-controls="search-results" />
+			<button type="button" class="search-field__close" data-search-close>Esc</button>
+		</div>
+		<ul class="search-results" id="search-results" role="listbox" aria-label="Search results"></ul>
+		<div class="search-empty" id="search-empty" hidden></div>
+		<div class="search-foot">
+			<span><kbd>&uarr;</kbd><kbd>&darr;</kbd> navigate</span>
+			<span><kbd>&crarr;</kbd> open</span>
+			<span><kbd>esc</kbd> close</span>
+		</div>
+	</div>
+</dialog>
+
+<script src="/assets/js/site.js" defer></script>
 </body>
 </html>

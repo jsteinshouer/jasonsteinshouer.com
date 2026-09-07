@@ -1,17 +1,21 @@
 ---
-layout: page
-title: 404
+layout: default
+title: Page not found
+permalink: 404.html
 sitemap:
   exclude: 'yes'
-permalink: 404.html
+eleventyExcludeFromCollections: true
 ---
 
-
-<h2 class="go-home">
-    I suggest you <a href="/">going home</a>, it's 404 and it's getting dark!
-</h2>
-
-
-
-<!-- Adding the glitch effect -->
-<script> document.getElementsByTagName('body')[0].classList.add('glitch'); </script>
+<div class="shell">
+	<div class="column notfound">
+		<p class="notfound__code">404</p>
+		<h1 class="page-head__title">This page isn&rsquo;t here</h1>
+		<p class="page-head__note">The link may be old, or the address may have a typo in it. Everything ever published is still on the site &mdash; try the archive or search for it.</p>
+		<div class="notfound__actions">
+			<a class="button button--primary" href="/archive/"><svg aria-hidden="true"><use href="#i-archive" /></svg> Browse the archive</a>
+			<button type="button" class="button" data-search-open><svg aria-hidden="true"><use href="#i-search" /></svg> Search posts</button>
+			<a class="button" href="/">Home</a>
+		</div>
+	</div>
+</div>

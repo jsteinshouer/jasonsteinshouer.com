@@ -1,0 +1,121 @@
+/* Prism syntax colors, derived from the site palette.
+   Layout and typography for code live in site.css; this file only assigns
+   token colors, in both themes. */
+
+:root {
+	--tok-comment:  #666d68;
+	--tok-punct:    #656c67;
+	--tok-name:     #8a4b1f;
+	--tok-string:   #0e6b54;
+	--tok-keyword:  #8f2f5a;
+	--tok-function: #1f5b96;
+	--tok-const:    #6b3fa0;
+	--tok-var:      #1a1c1b;
+	--tok-ins-bg:   #e2f2ea;
+	--tok-del-bg:   #fbe6e6;
+	--tok-ins-fg:   #0a5140;
+	--tok-del-fg:   #8f2626;
+}
+
+:root[data-theme="dark"] {
+	--tok-comment:  #9aa096;
+	--tok-punct:    #9aa09b;
+	--tok-name:     #e0a267;
+	--tok-string:   #59d6ae;
+	--tok-keyword:  #f291bd;
+	--tok-function: #7fbdf2;
+	--tok-const:    #c1a3f0;
+	--tok-var:      #e4e5e1;
+	--tok-ins-bg:   #1d3328;
+	--tok-del-bg:   #362325;
+	--tok-ins-fg:   #7fe0bb;
+	--tok-del-fg:   #f0a0a0;
+}
+
+/* No `background` here: Prism copies the language class up onto the <pre>,
+   and this file loads after site.css at equal specificity, so a reset here
+   silently wipes the code panel's own background layers. site.css owns the
+   panel's ground and its scroll cue. */
+code[class*="language-"],
+pre[class*="language-"] {
+	color: var(--ink);
+	text-shadow: none;
+	font-family: var(--font-code);
+	direction: ltr;
+	text-align: left;
+	white-space: pre;
+	word-spacing: normal;
+	word-break: normal;
+	word-wrap: normal;
+	hyphens: none;
+}
+
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata { color: var(--tok-comment); font-style: italic; }
+
+.token.punctuation { color: var(--tok-punct); }
+
+.token.namespace { opacity: 0.75; }
+
+.token.property,
+.token.tag,
+.token.constant,
+.token.symbol,
+.token.deleted { color: var(--tok-keyword); }
+
+.token.boolean,
+.token.number { color: var(--tok-const); }
+
+.token.selector,
+.token.attr-name,
+.token.string,
+.token.char,
+.token.builtin,
+.token.inserted { color: var(--tok-string); }
+
+.token.operator,
+.token.entity,
+.token.url,
+.language-css .token.string,
+.style .token.string { color: var(--tok-punct); }
+
+.token.atrule,
+.token.attr-value,
+.token.keyword { color: var(--tok-keyword); }
+
+.token.function,
+.token.class-name { color: var(--tok-function); }
+
+.token.regex,
+.token.important,
+.token.variable { color: var(--tok-name); }
+
+.token.important,
+.token.bold { font-weight: 700; }
+.token.italic { font-style: italic; }
+.token.entity { cursor: help; }
+
+/* Diff blocks — used across the refactoring and migration posts. */
+pre.diff-highlight > code .token.deleted:not(.prefix),
+pre > code.diff-highlight .token.deleted:not(.prefix),
+.token.deleted:not(.prefix) {
+	background-color: var(--tok-del-bg);
+	color: var(--tok-del-fg);
+	display: block;
+	margin-inline: -1.15rem;
+	padding-inline: 1.15rem;
+}
+pre.diff-highlight > code .token.inserted:not(.prefix),
+pre > code.diff-highlight .token.inserted:not(.prefix),
+.token.inserted:not(.prefix) {
+	background-color: var(--tok-ins-bg);
+	color: var(--tok-ins-fg);
+	display: block;
+	margin-inline: -1.15rem;
+	padding-inline: 1.15rem;
+}
+.token.prefix.deleted { color: var(--tok-del-fg); }
+.token.prefix.inserted { color: var(--tok-ins-fg); }
+.token.prefix.unchanged { color: var(--tok-comment); }
