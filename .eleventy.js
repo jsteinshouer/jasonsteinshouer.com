@@ -125,9 +125,6 @@ module.exports = function(eleventyConfig) {
     eleventyConfig.addCollection("posts", function(collectionApi) {
         return collectionApi.getFilteredByGlob("posts/**/*.md");
     });
-    eleventyConfig.addCollection("projects", function(collectionApi) {
-        return collectionApi.getFilteredByGlob("projects/**/*.md");
-    });
 
     eleventyConfig.addCollection("tags", function(collectionApi) {
         return collectionApi.getAll().reduce(function( collection, item ) {

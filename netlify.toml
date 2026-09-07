@@ -1,3 +1,16 @@
 [build]
   publish = "_site"
   command = "npm run build"
+
+# The project pages were retired. Their addresses were published for years, so
+# they redirect to the archive rather than 404 — the ranking and any inbound
+# links carry over instead of being dropped.
+[[redirects]]
+  from = "/projects"
+  to = "/archive/"
+  status = 301
+
+[[redirects]]
+  from = "/projects/*"
+  to = "/archive/"
+  status = 301

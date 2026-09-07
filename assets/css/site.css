@@ -286,10 +286,6 @@ time, .tabular { font-variant-numeric: tabular-nums; font-feature-settings: "tnu
 	margin-right: auto;
 }
 .wordmark:hover { color: var(--accent); }
-.wordmark .wordmark__mark {
-	color: var(--accent);
-	font-weight: 700;
-}
 
 .site-nav {
 	display: flex;
