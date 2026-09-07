@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-09-06T00:00:00Z",
+  "generatedAt": "2026-09-06T21:00:00Z",
   "title": "Design System: jasonsteinshouer.com",
   "extensions": {
     "colorMeta": {
@@ -186,7 +186,7 @@
       },
       "accent-dark": {
         "role": "primary",
-        "displayName": "Spruce Green (dark stock)",
+        "displayName": "Spruce Green (dark stock — same hue as light)",
         "canonical": "#59d6ae",
         "tonalRamp": [
           "#062119",
@@ -201,32 +201,62 @@
       },
       "paper-dark": {
         "role": "neutral",
-        "displayName": "Night Paper",
-        "canonical": "#101211",
+        "displayName": "Slate Paper (dark stock)",
+        "canonical": "#1c2124",
         "tonalRamp": [
-          "#080908",
-          "#101211",
-          "#191c1a",
-          "#282c29",
-          "#3a403c",
-          "#5c6360",
-          "#868d88",
-          "#e4e5e1"
+          "#0d1113",
+          "#151a1d",
+          "#1c2124",
+          "#2b3338",
+          "#3f4a50",
+          "#64747c",
+          "#97a6ad",
+          "#d5dde1"
         ]
       },
       "ink-dark": {
         "role": "neutral",
-        "displayName": "Night Ink",
-        "canonical": "#e4e5e1",
+        "displayName": "Cream Ink (dark stock)",
+        "canonical": "#ece5d8",
         "tonalRamp": [
-          "#131413",
-          "#222423",
-          "#383b39",
-          "#4f534f",
-          "#6f7470",
-          "#9aa09b",
-          "#c2c6c2",
-          "#e4e5e1"
+          "#1a1712",
+          "#2c261d",
+          "#463d30",
+          "#635747",
+          "#8b7d6a",
+          "#b4a693",
+          "#d2c8b7",
+          "#ece5d8"
+        ]
+      },
+      "paper-sunk-dark": {
+        "role": "neutral",
+        "displayName": "Sunk Slate (dark code panel ground)",
+        "canonical": "#242a2d",
+        "tonalRamp": [
+          "#0f1213",
+          "#171b1d",
+          "#242a2d",
+          "#333b3f",
+          "#4a5559",
+          "#6d7b80",
+          "#9aa8ad",
+          "#d7dee1"
+        ]
+      },
+      "code-cue": {
+        "role": "neutral",
+        "displayName": "Code Cue",
+        "canonical": "#767c78",
+        "tonalRamp": [
+          "#141614",
+          "#232624",
+          "#383c39",
+          "#4f5450",
+          "#767c78",
+          "#9ba09d",
+          "#c2c6c4",
+          "#e8eae9"
         ]
       }
     },
@@ -237,11 +267,11 @@
       },
       "headline": {
         "displayName": "Headline",
-        "purpose": "Page heads on tags, archive, projects, about, 404."
+        "purpose": "Page heads on tags, archive, about, 404."
       },
       "title": {
         "displayName": "Title",
-        "purpose": "Post-list entry titles, project names, archive year numbers, prose h2."
+        "purpose": "Post-list entry titles, archive year numbers, prose h2."
       },
       "lede": {
         "displayName": "Lede",
@@ -269,7 +299,7 @@
       },
       "wordmark": {
         "displayName": "Wordmark",
-        "purpose": "Masthead identity only, surname in accent. A type role, not a logo."
+        "purpose": "Masthead identity only, set in one ink across the whole name; accent on hover. A type role, not a logo."
       },
       "control": {
         "displayName": "Control",
@@ -362,7 +392,7 @@
       {
         "name": "measure",
         "value": "68ch",
-        "purpose": "The prose column: posts, pages, projects, 404."
+        "purpose": "The prose column: posts, pages, 404."
       },
       {
         "name": "column--index",
@@ -372,7 +402,7 @@
       {
         "name": "column--wide",
         "value": "54rem",
-        "purpose": "Tag index, archive, project index — lists, not prose."
+        "purpose": "Tag index and archive — lists, not prose."
       }
     ],
     "scales": {
@@ -426,7 +456,7 @@
     ],
     "syntax": {
       "ground": "paper-sunk",
-      "note": "Prism token colors, derived from the site palette and contrast-checked against --paper-sunk (the code panel's ground), never against --paper. Layout and type for code live in site.css; prism-theme.css only assigns token colors.",
+      "note": "Prism token colors, derived from the site palette and contrast-checked against --paper-sunk (the code panel's ground), never against --paper. Re-measured after the dark palette change: all eight dark tokens land 5.43-11.49:1 on #242a2d. Layout and type for code live in site.css; prism-theme.css only assigns token colors and deliberately does not reset `background` on `pre` — Prism copies the language class onto the <pre>, and a reset there would wipe the panel's own background layers and its scroll cue.",
       "light": {
         "comment": "#666d68",
         "punct": "#656c67",
@@ -442,7 +472,7 @@
         "del-fg": "#8f2626"
       },
       "dark": {
-        "comment": "#868d88",
+        "comment": "#9aa096",
         "punct": "#9aa09b",
         "name": "#e0a267",
         "string": "#59d6ae",
@@ -450,12 +480,19 @@
         "function": "#7fbdf2",
         "const": "#c1a3f0",
         "var": "#e4e5e1",
-        "ins-bg": "#14291f",
-        "del-bg": "#2c1a1a",
+        "ins-bg": "#1d3328",
+        "del-bg": "#362325",
         "ins-fg": "#7fe0bb",
         "del-fg": "#f0a0a0"
       }
-    }
+    },
+    "retired": [
+      {
+        "what": "Projects index and project detail pages",
+        "evidence": "_includes/project.html and projects/index.html deleted; `projects` collection removed from .eleventy.js; projects/ in .eleventyignore; Projects out of the masthead nav; netlify.toml 301s /projects and /projects/* to /archive/.",
+        "note": "The .project* rules remaining in assets/css/site.css (section 14) are dead code and are not part of the system. Do not build a new surface from them."
+      }
+    ]
   },
   "components": [
     {
@@ -486,8 +523,8 @@
       "name": "Masthead Nav Link",
       "kind": "nav",
       "refersTo": null,
-      "description": "Sans nav item whose accent underline wipes in from the left; the current page keeps a static neutral underline.",
-      "html": "<nav class=\"ds-nav\" aria-label=\"Primary\"><a href=\"#\" aria-current=\"page\">Writing</a><a href=\"#\">Tags</a><a href=\"#\">Archive</a><a href=\"#\">Projects</a><a href=\"#\">About</a></nav>",
+      "description": "Sans nav item whose accent underline wipes in from the left; the current page keeps a static neutral underline. Four destinations: Writing, Tags, Archive, About.",
+      "html": "<nav class=\"ds-nav\" aria-label=\"Primary\"><a href=\"#\" aria-current=\"page\">Writing</a><a href=\"#\">Tags</a><a href=\"#\">Archive</a><a href=\"#\">About</a></nav>",
       "css": ".ds-nav { display: flex; align-items: center; gap: 1.5rem; font-family: var(--font-ui, ui-sans-serif, system-ui, sans-serif); font-size: 0.8125rem; letter-spacing: 0.01em; } .ds-nav a { color: var(--ink-soft, #5c6360); text-decoration: none; padding: 0.35rem 0; position: relative; white-space: nowrap; } .ds-nav a::after { content: \"\"; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: var(--accent, #0e6b54); transform: scaleX(0); transform-origin: left; transition: transform 0.25s cubic-bezier(0.16,1,0.3,1); } .ds-nav a:hover { color: var(--ink, #1a1c1b); } .ds-nav a:hover::after { transform: scaleX(1); } .ds-nav a[aria-current=\"page\"] { color: var(--ink, #1a1c1b); font-weight: 600; } .ds-nav a[aria-current=\"page\"]::after { transform: scaleX(1); background: var(--rule-strong, #cfcfc8); } .ds-nav a:focus-visible { outline: 2px solid var(--accent, #0e6b54); outline-offset: 3px; }"
     },
     {
@@ -533,9 +570,9 @@
   ],
   "narrative": {
     "northStar": "The Working Notebook",
-    "overview": "This is a reading surface, not a personal-brand site. Nine years of technical posts are treated as one continuous body of work, and every decision serves the reader who landed deep on a single post with a problem to solve. The page is paper; the text is ink; a single spruce green marks the things you can act on. Structure is carried entirely by typography, hairline rules, and a hanging date margin — there are no cards, no cover images, no shadows, and no decorative chrome anywhere in the built system.\n\nThe density is generous rather than airy. A 68ch reading measure sets the width of the whole world, and the two wider containers exist only to give the measure room to breathe, never to fill a screen. Code is not an inclusion in the prose — it is the content — so code blocks get a bordered panel, a language label, a copy control, and permission to overhang the measure by 2rem once the viewport can spare it. Everything else recedes: the masthead is a hairline that only draws its border once you scroll, the footer is one row of quiet links, and the table of contents is a rail in the outer margin that disappears entirely below 78em.\n\nBoth themes are first-class, resolved before first paint from storage or the OS preference. The dark theme is not an inversion: it is a second paper stock, warmer and greener at the accent, with its own numerically checked contrast. Confirmed rejections: the inherited Ghost/Kasper identity, the cover-image hero, the portrait masthead, any funnel or marketing register, and any third-party request at all — no CDN, no font service, no analytics, no framework.",
+    "overview": "This is a reading surface, not a personal-brand site. Nine years of technical posts are treated as one continuous body of work, and every decision serves the reader who landed deep on a single post with a problem to solve. The page is paper; the text is ink; a single spruce green marks the things you can act on. Structure is carried entirely by typography, hairline rules, and a hanging date margin — there are no cards, no cover images, no shadows, and no decorative chrome anywhere in the built system.\n\nThe density is generous rather than airy. A 68ch reading measure sets the width of the whole world, and the two wider containers exist only to give the measure room to breathe, never to fill a screen. Code is not an inclusion in the prose — it is the content — so code blocks get a bordered panel, a language label, a copy control, and permission to overhang the measure by 2rem once the viewport can spare it. Everything else recedes: the masthead is a hairline that only draws its border once you scroll, the footer is one row of quiet links, and the table of contents is a rail in the outer margin that disappears entirely below 78em.\n\nBoth themes are first-class, resolved before first paint from storage or the OS preference. The dark theme is not an inversion: it is a second paper stock — a blue slate ground carrying warm cream ink, not a near-black carrying neutral white — with its own numerically checked contrast. The one thing it does not change is the accent: the same spruce green runs through both stocks, so the site does not swap identity when the lights go out. Confirmed rejections: the inherited Ghost/Kasper identity, the cover-image hero, the portrait masthead, any funnel or marketing register, and any third-party request at all — no CDN, no font service, no analytics, no framework.",
     "keyCharacteristics": [
-      "Paper-and-ink neutrals with one spruce-green accent, light and dark",
+      "Paper-and-ink neutrals with one spruce-green accent — the same hue in both stocks",
       "Serif reading column (Source Serif 4), system sans for metadata, JetBrains Mono for code",
       "Depth by hairline and tonal ground only — zero box-shadows in the entire stylesheet",
       "Three container widths, all derived from the 68ch measure",
@@ -549,8 +586,18 @@
         "section": "colors"
       },
       {
+        "name": "The One Identity Rule",
+        "body": "The accent hue does not change between themes. A palette imported from a sibling variation may bring its grounds and its inks; it does not bring its accent. Spruce carries light and dark alike, because a design whose accent flips hue when the theme flips has two identities instead of one.",
+        "section": "colors"
+      },
+      {
+        "name": "The Retune-Don't-Transplant Rule",
+        "body": "An imported palette is retuned against the ground it lands on, never pasted. Translucent rules are flattened to opaque values on the new stock; accent-wash is re-picked so it still sits above its ground in luminance rather than below it (0.0280 against a 0.0146 paper and a 0.0222 sunk paper); and every syntax token is re-measured against the new panel. A value that was correct on the source's ground is a claim, not a fact, until it is measured on this one.",
+        "section": "colors"
+      },
+      {
         "name": "The 4.5 Rule",
-        "body": "ink-faint is the floor for every piece of metadata text and it clears 4.5:1 against paper, sunk paper, and raised paper in both themes. Any new muted text uses ink-faint; do not invent a lighter gray for \"quieter\" text. The audit test is a computed one, not a static one: walk every text-bearing element, resolve its real background up the ancestor chain, and apply the large-text threshold. The current build returns zero failures across 1,969 elements in both themes.",
+        "body": "ink-faint is the floor for every piece of metadata text and it clears 4.5:1 against paper, sunk paper, and raised paper in both themes. Any new muted text uses ink-faint; do not invent a lighter gray for \"quieter\" text. The audit test is a computed one, not a static one: walk every text-bearing element, resolve its real background up the ancestor chain, and apply the large-text threshold. The current build returns zero failures across 1,811 elements in both themes.",
         "section": "colors"
       },
       {
@@ -566,6 +613,11 @@
       {
         "name": "The Label-Never-Kicks Rule",
         "body": "The uppercase micro-label exists to head a section or name a control. It never appears above a headline as a kicker or eyebrow, and it is never used to categorize a post.",
+        "section": "typography"
+      },
+      {
+        "name": "The One-Ink Wordmark Rule",
+        "body": "The wordmark is the name in a single ink. It does not split into two colors, two weights, or two faces to mark the surname. Accent is a state it enters on hover, not a decoration it wears at rest.",
         "section": "typography"
       },
       {
@@ -600,7 +652,7 @@
       },
       {
         "name": "The Sunk-Ground Rule",
-        "body": "Syntax tokens are content and are measured against paper-sunk, the code panel's ground — never against paper. Measuring a syntax color against the page ground overstates it by roughly 0.4:1 and will pass a color that fails in the panel. Any new language's token colors clear 4.5:1 on paper-sunk in both themes before they ship.",
+        "body": "Syntax tokens are content and are measured against paper-sunk, the code panel's ground — never against paper. Measuring a syntax color against the page ground overstates it by roughly 0.4:1 and will pass a color that fails in the panel. Any new language's token colors clear 4.5:1 on paper-sunk in both themes before they ship. Reconfirmed against the current dark panel (#242a2d): all eight tokens land between 5.43:1 and 11.49:1, with prose ink at 11.61:1 on the same ground.",
         "section": "colors"
       },
       {
@@ -615,6 +667,8 @@
       "Do use ink-faint for every piece of metadata text; it is the contrast floor and it is already verified in both themes.",
       "Do contrast-check any new syntax token against paper-sunk and any new body or meta text against its own resolved ancestor background, computed in the browser rather than read off the file.",
       "Do define any new color twice — once in :root, once in :root[data-theme=\"dark\"] — and never derive the dark value by inversion or opacity.",
+      "Do keep the accent hue identical across both stocks; move its lightness, never its hue.",
+      "Do re-measure a borrowed value against the ground it lands on before recording it, per The Retune-Don't-Transplant Rule.",
       "Do reach for the existing SVG sprite for icons, and author any new symbol on the same 24×24 grid at 1.6 stroke, fill: none, round caps.",
       "Do pick from the four-step interface register (1 / 0.8125 / 0.75 / 0.6875rem) and the six-step radius scale (2 / 3 / 4 / 6 / 10px, plus derived insets) rather than authoring a new size.",
       "Do animate color, border-color, opacity, background-size, and transform only, at 150–250ms on cubic-bezier(0.16, 1, 0.3, 1).",
@@ -623,13 +677,14 @@
     ],
     "donts": [
       "Don't add a box-shadow. There are none in the system, and the two places that might seem to want one (the code panel's scroll cue, the search overlay) already solve it with background layers and a scrim.",
-      "Don't turn a list of posts, tags, or projects into cards. Rows and hairlines carry every index in the system.",
-      "Don't introduce a second accent hue, including for status, category, or emphasis. See The One Green Rule.",
+      "Don't turn a list of posts or tags into cards. Rows and hairlines carry every index in the system.",
+      "Don't introduce a second accent hue, including for status, category, or emphasis, and don't let the accent change hue between themes. See The One Green Rule and The One Identity Rule.",
       "Don't set prose wider than 68ch, and don't let anything but a code block overhang the measure.",
       "Don't use the uppercase micro-label as a kicker or eyebrow above a headline; it heads sections and names controls only.",
       "Don't add a third type register. Serif reads, sans labels, mono codes.",
       "Don't load anything from a third party — no font service, no CDN, no icon package, no analytics, no framework. Fonts are self-hosted variable woff2 and the whole front end is one stylesheet and one progressive-enhancement script with no build step.",
       "Don't ship a component that requires JavaScript to be legible. The TOC, the copy button, the language label, and search are all enhancements over markup that already works.",
+      "Don't two-tone the wordmark, or mark any part of the name with color at rest.",
       "Don't reintroduce a cover image, a portrait masthead, or any marketing register.",
       "Don't invent a size below 0.6875rem or a radius between the scale's steps. If something needs to be smaller or softer than the scale allows, the scale is right and the element is wrong.",
       "Don't apply palette tokens inside @media print; that block targets ink on paper and uses absolutes deliberately.",
